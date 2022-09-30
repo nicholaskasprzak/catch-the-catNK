@@ -1,6 +1,14 @@
 #include "Catcher.h"
 #include "World.h"
 
+// Goal is to block the cat's path and encapsulate it.
+// Check all possible paths the cat can take and place
+// a block in a position closest to another block on
+// said path? Would this slowly block off the cat's 
+// path over time? Or would it just be better to place
+// a block on the cat's path closest to the cat?
+// How should this account for movement?
+
 Point2D Catcher::Move(World* world) {
   auto side = world->getWorldSideSize()/2;
   for(;;) {
