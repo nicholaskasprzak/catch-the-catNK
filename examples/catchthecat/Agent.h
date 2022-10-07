@@ -6,11 +6,21 @@
 struct queueEntry
 {
 	queueEntry() = default;
-	//queueEntry(Point2D pos, int weight) { this->pos = pos; this->weight = weight; }
-	
-	Point2D pos;
+	/*
+	queueEntry(Point2D cameFrom, int weight, bool visited)
+	{
+		this->cameFrom = cameFrom; // no default constructor?
+		this->weight = weight;
+		this->visited = visited;
+	}
+	*/
+
+	Point2D position;
+	Point2D cameFrom;
 	int weight; // accumulated
-	// bool visited?
+	bool visited;
+	bool blocked;
+	// in queue?
 
 	bool operator< (queueEntry& rhs)
 	{
@@ -30,7 +40,7 @@ public:
 
 private:
   // This needs to be built to represent all available spaces.
-  std::map<int, std::map<int, queueEntry>> visited;
+  //std::map<int, std::map<int, queueEntry>> visited;
 };
 
 #endif  // AGENT_H
