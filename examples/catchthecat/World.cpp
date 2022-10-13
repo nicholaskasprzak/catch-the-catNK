@@ -190,7 +190,9 @@ void World::step() {
   }
   else {
     auto move = catcher->Move(this);
-    worldState[move.y*(sideSize/2) + move.x + sideSize*sideSize/2]=true;
+    worldState[(move.y + sideSize/2) * (sideSize) + move.x + sideSize/2] = true;
+    //worldState[move.y*(sideSize/2) + move.x + sideSize*sideSize/2]=true;
+    //(p.y+sideSize/2)*(sideSize) + p.x + sideSize/2
   }
   auto stop = std::chrono::high_resolution_clock::now();
   moveDuration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start).count();
