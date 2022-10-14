@@ -36,10 +36,44 @@ Point2D Cat::Move(World* world)
 
 	// Check if a goal was found. If not, it will
 	// still be the default value of out of bounds.
-	// Return the cat's current position as it can
-	// no longer move towards a goal
+	// Since the cat will not have a goal to move to
+	// it will instead choose to move to a random
+	// nearby position.
+
+	// Or should it move to the furthest open position?
 	if (goalPos == Point2D(world->getWorldSideSize() + 1, world->getWorldSideSize() + 1))
 	{
+		std::vector<Point2D> neighbors;
+		neighbors.push_back(world->E(catPos));
+		neighbors.push_back(world->NE(catPos));
+		neighbors.push_back(world->NW(catPos));
+		neighbors.push_back(world->SE(catPos));
+		neighbors.push_back(world->SW(catPos));
+		neighbors.push_back(world->W(catPos));
+
+		std::vector<Point2D> availableNeighbors;
+		for (int i = 0; i < neighbors.size(); i++)
+		{
+			if (!world->getContent(neighbors[i]))
+			{
+				availableNeighbors.push_back(neighbors[i]);
+			}
+		}
+
+		if (availableNeighbors.size() != 0)
+		{
+			int random = rand() % availableNeighbors.size();
+
+			return availableNeighbors[random];
+		}
+
+		std::cout << "Cat Caught" << std::endl;
+		return catPos;
+	}
+
+	if (catPos == goalPos)
+	{
+		std::cout << "Cat Escaped" << std::endl;
 		return catPos;
 	}
 
@@ -48,12 +82,6 @@ Point2D Cat::Move(World* world)
 	if (cameFrom.size() == 1)
 	{
 		std::cout << "Cat Caught" << std::endl;
-		return catPos;
-	}
-
-	if (catPos == goalPos)
-	{
-		std::cout << "Cat Escaped" << std::endl;
 		return catPos;
 	}
 
