@@ -10,7 +10,7 @@ class Eller : public MazeGeneratorBase
 {
 public:
 	Eller() = default;
-	std::string GetName() override { return "Eller"; };
+	std::string GetName() override { return "Eller (Broken)"; };
 	bool Step(World* world) override;
 	void Clear(World* world) override;
 
