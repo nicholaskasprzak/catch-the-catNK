@@ -1,14 +1,14 @@
 #include "World.h"
 #include "generators/RecursiveBacktracker.h"
 #include "generators/Eller.h"
-#include "generators/Prim.h"
+#include "generators/PrimNew.h"
 #include <chrono>
 
 World::World(Engine* pEngine, int size=11): GameObject(pEngine), sideSize(size) {
   generators.push_back(new MazeGenerator());
   generators.push_back(new RecursiveBacktracker());
   generators.push_back(new Eller());
-  generators.push_back(new Prim());
+  generators.push_back(new PrimNew());
 }
 
 World::~World(){
