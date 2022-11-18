@@ -1,12 +1,16 @@
 #include "World.h"
-#include "generators/RecursiveBacktracker.h"
-#include "generators/Eller.h"
+#include "generators/HuntAndKillExample.h"
+#include "generators/RecursiveBacktrackerExample.h"
+#include "generators/PrimExample.h"
 #include "generators/PrimNew.h"
+#include "generators/Eller.h"
 #include <chrono>
 
 World::World(Engine* pEngine, int size=11): GameObject(pEngine), sideSize(size) {
+  generators.push_back(new PrimExample());
   generators.push_back(new MazeGenerator());
-  generators.push_back(new RecursiveBacktracker());
+  generators.push_back(new RecursiveBacktrackerExample());
+  generators.push_back(new HuntAndKillExample());
   generators.push_back(new Eller());
   generators.push_back(new PrimNew());
 }
@@ -68,8 +72,6 @@ void World::Start() {
 void World::OnGui(ImGuiContext *context){
   ImGui::SetCurrentContext(context);
   float deltaTime = ImGui::GetIO().DeltaTime;
-
-  ImGui::SetCurrentContext(context);
   ImGui::Begin("Settings", nullptr);
   ImGui::Text("%.1fms %.0fFPS | AVG: %.2fms %.1fFPS",
               ImGui::GetIO().DeltaTime * 1000,
@@ -122,6 +124,7 @@ void World::OnGui(ImGuiContext *context){
     }
     ImGui::EndCombo();
   }
+  ImGui::End();
 }
 
 void World::OnDraw(SDL_Renderer* renderer){
@@ -186,7 +189,7 @@ void World::Clear() {
   colors.clear();
   colors.resize(sideSize*sideSize);
   for(int i=0; i<sideSize*sideSize; i++)
-    colors[i] = (Color::Gray).Dark();
+    colors[i] = Color::DarkGray;
 
   // clear maze generators
   for(int i=0;i<generators.size(); i++)
@@ -210,6 +213,12 @@ void World::SetNodeColor(const Point2D& node, const Color32& color) {
   colors[(node.y+sideSize/2)*sideSize+node.x+sideSize/2] = color;
 }
 
+Color32 World::GetNodeColor(const Point2D& node) {
+  return colors[(node.y+sideSize/2)*sideSize+node.x+sideSize/2];
+}
+
 int World::GetSize() const {
   return sideSize;
 }
+
+
