@@ -35,6 +35,11 @@ bool Prim::Step(World* world)
 
 		// Choose randomly from one of it's "in" neighbors
 		std::vector<Point2D> neighbors = getNeighbors(node, world);
+
+		if (neighbors.size() == 0)
+		{
+			std::cout << "hi" << std::endl;
+		}
 		Point2D randomNeighbor = neighbors[Random::Range(0, neighbors.size())];
 
 		// This is then recorded as a passage from that
@@ -75,8 +80,6 @@ void Prim::mark(Point2D point, World* world)
 	add(Point2D(x + 1, y), world);
 	add(Point2D(x, y - 1), world);
 	add(Point2D(x, y + 1), world);
-
-	std::cout << frontier.size() << std::endl;
 }
 
 // Utility function that handles logic behind adding
@@ -105,6 +108,7 @@ void Prim::add(Point2D point, World* world)
 // Returns a vector of "in" neighbors
 std::vector<Point2D> Prim::getNeighbors(Point2D point, World* world)
 {
+	/*
 	int worldSize = world->GetSize();
 
 	std::vector<Point2D> neighbors;
@@ -137,6 +141,43 @@ std::vector<Point2D> Prim::getNeighbors(Point2D point, World* world)
 		{
 			neighbors.erase(neighbors.begin() + i);
 		}
+	}
+
+	return neighbors;
+	*/
+
+	std::vector<Point2D> neighbors;
+	int sideOver = world->GetSize() / 2;
+
+	int x = point.x;
+	int y = point.y;
+
+	if ((abs(x) <= sideOver && abs(y - 1) <= sideOver) &&
+		!grid[x][y - 1] &&
+		world->GetNorth({ x, y - 1 }))
+	{
+		neighbors.emplace_back(x, y - 1);
+	}
+
+	if ((abs(x) <= sideOver && abs(y + 1) <= sideOver) &&
+		!grid[x][y + 1] &&
+		world->GetNorth({ x, y + 1 }))
+	{
+		neighbors.emplace_back(x, y + 1);
+	}
+
+	if ((abs(x - 1) <= sideOver && abs(y) <= sideOver) &&
+		!grid[x - 1][y] &&
+		world->GetNorth({ x - 1, y}))
+	{
+		neighbors.emplace_back(x - 1, y);
+	}
+
+	if ((abs(x + 1) <= sideOver && abs(y) <= sideOver) &&
+		!grid[x + 1][y] &&
+		world->GetNorth({ x + 1, y }))
+	{
+		neighbors.emplace_back(x + 1, y);
 	}
 
 	return neighbors;
